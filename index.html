@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>📚 Try Out • PJOK + Bahasa Lampung</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e7e34, #0d6efd);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .login-box, .unlock-box {
+            background: white;
+            border-radius: 30px;
+            padding: 40px;
+            max-width: 400px;
+            margin: 100px auto;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .login-box h1, .unlock-box h1 {
+            color: #1e7e34;
+            margin-bottom: 10px;
+        }
+
+        .login-box input, .unlock-box input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 2px solid #ddd;
+            border-radius: 25px;
+            font-size: 16px;
+        }
+
+        .login-box button, .unlock-box button {
+            background: linear-gradient(135deg, #1e7e34, #0d6efd);
+            color: white;
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .error-msg {
+            color: red;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        .header {
+            background: white;
+            border-radius: 20px;
+            padding: 15px 25px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .header h2 {
+            color: #1e7e34;
+        }
+
+        .logout-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .tab-btn.active {
+            background: white;
+            color: #1e7e34;
+        }
+
+        .tab-btn.disabled {
+            background: rgba(255,255,255,0.1);
+            color: #aaa;
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        .tab-content {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            display: none;
+            min-height: 600px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .mapel-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .mapel-card {
+            background: linear-gradient(135deg, #f5f7fa, #e9ecef);
+            padding: 35px 20px;
+            border-radius: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .mapel-card:hover {
+            transform: translateY(-5px);
+            border-color: #1e7e34;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .mapel-card.selected {
+            background: linear-gradient(135deg, #1e7e34, #0d6efd);
+            color: white;
+        }
+
+        .mapel-card.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .mapel-card .icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .exam-layout {
+            display: flex;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+
+        .question-nav {
+            width: 280px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+        }
+
+        .question-nav h4 {
+            color: #1e7e34;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .nav-item {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+            font-size: 14px;
+        }
+
+        .nav-item:hover {
+            transform: scale(1.05);
+            border-color: #1e7e34;
+        }
+
+        .nav-item.answered {
+            background: #28a745;
+            color: white;
+            border-color: #28a745;
+        }
+
+        .nav-item.ragu {
+            background: #ffc107;
+            color: #856404;
+            border-color: #ffc107;
+        }
+
+        .nav-item.current {
+            background: #1e7e34;
+            color: white;
+            border-color: #1e7e34;
+            box-shadow: 0 0 0 2px white, 0 0 0 4px #1e7e34;
+        }
+
+        .nav-legend {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            font-size: 11px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .legend-box {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+        }
+
+        .question-main {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .info-card {
+            background: linear-gradient(135deg, #1e7e34, #0d6efd);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .progress-bar-container {
+            background: rgba(255,255,255,0.3);
+            border-radius: 20px;
+            height: 20px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: #28a745;
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s;
+            border-radius: 20px;
+        }
+
+        .question {
+            background: #f8f9ff;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border-left: 4px solid #1e7e34;
+        }
+
+        .question-text {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            background: white;
+            border-radius: 10px;
+            cursor: pointer;
+            border: 1px solid #ddd;
+            transition: 0.2s;
+        }
+
+        .option:hover {
+            background: #f0f0ff;
+            border-color: #1e7e34;
+        }
+
+        .option input {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            gap: 15px;
+        }
+
+        .nav-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .ragu-btn {
+            background: #ffc107;
+            color: #856404;
+        }
+
+        .ragu-btn.active {
+            background: #ff9800;
+            color: white;
+        }
+
+        .submit-btn {
+            background: #28a745;
+            color: white;
+            width: 100%;
+            padding: 14px;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 20px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-reset {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .score-box {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .score-box h2 {
+            font-size: 48px;
+            margin-bottom: 5px;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            color: #856404;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background: #f8f9fa;
+            color: #1e7e34;
+        }
+
+        .nilai-lulus {
+            background: #d4edda;
+            color: #155724;
+            padding: 5px 12px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+        .nilai-remedial {
+            background: #fff3cd;
+            color: #856404;
+            padding: 5px 12px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+
+        .empty-state .icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @media (max-width: 900px) {
+            .exam-layout { flex-direction: column; }
+            .question-nav { width: 100%; position: static; }
+            .nav-grid { grid-template-columns: repeat(10, 1fr); }
+        }
+
+        @media (max-width: 600px) {
+            .nav-grid { grid-template-columns: repeat(5, 1fr); }
+            .tab-btn { padding: 8px 16px; font-size: 14px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div id="loginBox" class="login-box">
+        <h1>📚 Try Out</h1>
+        <p>PJOK + Bahasa Lampung</p>
+        <input type="text" id="namaInput" placeholder="Nama Lengkap">
+        <input type="password" id="tokenInput" placeholder="Token Kode">
+        <button onclick="login()">🚀 Masuk</button>
+        <div id="loginError" class="error-msg"></div>
+    </div>
+
+    <div id="unlockModal" style="display:none;">
+        <div class="overlay">
+            <div class="unlock-box">
+                <h1>🔒 AKUN TERBLOKIR</h1>
+                <p>Anda mencoba mengakses halaman lain saat ujian berlangsung.<br>Masukkan token untuk melanjutkan:</p>
+                <input type="password" id="unlockToken" placeholder="Masukkan Token">
+                <button onclick="unlockWithToken()">🔓 Buka Blokir</button>
+                <div id="unlockError" class="error-msg"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="mainApp" style="display:none;">
+        <div class="header">
+            <h2>📚 Try Out • PJOK + Bahasa Lampung</h2>
+            <div>
+                <span id="userName" style="margin-right:15px; font-weight:bold;"></span>
+                <button class="logout-btn" onclick="triggerBlock()">🚪 Keluar</button>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-btn active" id="tabMapelBtn" onclick="checkAndShowTab('tab1')">📋 1. Pilih Mapel</button>
+            <button class="tab-btn" id="tabSoalBtn" onclick="checkAndShowTab('tab2')">📝 2. Kerjakan Soal</button>
+            <button class="tab-btn" id="tabNilaiBtn" onclick="checkAndShowTab('tab3')">📊 3. Data Nilai</button>
+        </div>
+
+        <div id="tab1" class="tab-content active">
+            <h3>📋 Pilih Mata Pelajaran</h3>
+            <div id="mapelGrid" class="mapel-grid"></div>
+        </div>
+
+        <div id="tab2" class="tab-content">
+            <div id="soalContainer"></div>
+        </div>
+
+        <div id="tab3" class="tab-content">
+            <h3>📊 Data Nilai</h3>
+            <div class="score-box">
+                <h2 id="rataRata">0</h2>
+                <p>Rata-rata Nilai</p>
+            </div>
+            <div style="overflow-x: auto;">
+                <table id="nilaiTable">
+                    <thead><tr><th>No</th><th>Mapel</th><th>Jumlah</th><th>Benar</th><th>Salah</th><th>Nilai</th><th>Status</th></tr></thead>
+                    <tbody id="nilaiBody"></tbody>
+                </table>
+            </div>
+            <div style="margin-top:20px; text-align:center;">
+                <button class="btn-reset" onclick="resetSemuaNilai()">🔄 Reset Semua Nilai</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const VALID_TOKEN = "fadila putri";
+
+    // ========== SOAL PJOK PENALARAN BARU (30 SOAL) ==========
+    const soalPJOK = [
+        { text: "1. Dalam pertandingan futsal, pemain harus bergerak cepat karena …", options: ["lapangan kecil dan tempo permainan cepat", "bola sangat berat", "jumlah pemain banyak", "waktu permainan lama", "gawang terlalu besar"], jawaban: 0 },
+        { text: "2. Passing dalam sepak bola penting dilakukan agar …", options: ["kerja sama tim lebih baik", "pemain cepat lelah", "bola mudah hilang", "permainan berhenti", "lawan menang"], jawaban: 0 },
+        { text: "3. Pemain yang terlalu egois saat bermain biasanya menyebabkan …", options: ["serangan sulit berkembang", "tim langsung menang", "lawan takut", "skor bertambah", "permainan cepat selesai"], jawaban: 0 },
+        { text: "4. Shooting yang tepat ke arah gawang bertujuan untuk …", options: ["mencetak gol", "menghentikan permainan", "mengulur waktu", "membuat bola keluar", "mengurangi pemain lawan"], jawaban: 0 },
+        { text: "5. Dalam sepak bola, pemanasan dilakukan sebelum bermain agar …", options: ["mengurangi risiko cedera", "pemain cepat lelah", "pertandingan berhenti", "bola lebih ringan", "lawan takut"], jawaban: 0 },
+        { text: "6. Kiper harus memiliki fokus tinggi karena bertugas …", options: ["menjaga gawang dari serangan lawan", "mencetak seluruh gol", "menjadi wasit", "mengatur penonton", "mengganti pemain"], jawaban: 0 },
+        { text: "7. Teknik menggiring bola diperlukan supaya pemain dapat …", options: ["melewati lawan sambil menguasai bola", "menghentikan pertandingan", "membuat bola keluar", "duduk di lapangan", "memperlambat permainan"], jawaban: 0 },
+        { text: "8. Jika pertahanan tim lemah maka lawan akan lebih mudah …", options: ["mencetak gol", "terkena kartu", "kehilangan bola", "berhenti bermain", "terkena offside"], jawaban: 0 },
+        { text: "9. Dalam futsal, pergantian pemain yang cepat membantu tim menjaga …", options: ["stamina permainan", "ukuran lapangan", "warna seragam", "bentuk bola", "jumlah penonton"], jawaban: 0 },
+        { text: "10. Sikap menghormati lawan setelah pertandingan menunjukkan …", options: ["sportivitas", "kemarahan", "kelemahan", "ketakutan", "kecurangan"], jawaban: 0 },
+        { text: "11. Passing bawah digunakan pemain voli untuk …", options: ["menerima bola pertama", "melakukan smash", "memblok lawan", "menendang bola", "menghentikan permainan"], jawaban: 0 },
+        { text: "12. Smash yang diarahkan ke area kosong lawan bertujuan agar …", options: ["memperoleh poin", "pertandingan berhenti", "bola keluar lapangan", "lawan menang", "servis diulang"], jawaban: 0 },
+        { text: "13. Kerja sama tim dalam voli penting karena …", options: ["setiap pemain memiliki tugas berbeda", "semua pemain bermain sendiri", "bola sangat berat", "net terlalu rendah", "permainan singkat"], jawaban: 0 },
+        { text: "14. Servis yang baik dapat membuat lawan …", options: ["kesulitan menerima bola", "langsung menang", "menghentikan permainan", "mengganti pemain", "duduk di lapangan"], jawaban: 0 },
+        { text: "15. Blocking dilakukan dekat net untuk …", options: ["menghalangi serangan lawan", "menerima servis", "memulai permainan", "menggiring bola", "mengulur waktu"], jawaban: 0 },
+        { text: "16. Komunikasi antar pemain voli sangat penting agar …", options: ["permainan lebih teratur", "pemain bertabrakan", "bola keluar lapangan", "pertandingan berhenti", "lawan menang"], jawaban: 0 },
+        { text: "17. Pemain yang kurang fokus saat menerima servis biasanya menyebabkan …", options: ["bola mudah jatuh", "tim langsung menang", "lawan terkena hukuman", "net menjadi rusak", "skor bertambah sendiri"], jawaban: 0 },
+        { text: "18. Passing atas sering digunakan untuk …", options: ["mengatur serangan smash", "menendang bola", "memblok lawan", "menghentikan servis", "memperlambat permainan"], jawaban: 0 },
+        { text: "19. Rotasi pemain dalam voli bertujuan agar …", options: ["semua pemain mendapat posisi bergantian", "permainan berhenti", "lawan bingung", "skor berkurang", "bola mudah jatuh"], jawaban: 0 },
+        { text: "20. Pemain voli harus memiliki refleks cepat karena …", options: ["arah bola berubah dengan cepat", "bola terlalu berat", "lapangan terlalu besar", "permainan lambat", "net mudah jatuh"], jawaban: 0 },
+        { text: "21. Dribbling dilakukan dalam basket agar pemain dapat …", options: ["membawa bola sambil bergerak", "menghentikan pertandingan", "mengurangi skor lawan", "memegang bola diam", "menendang bola"], jawaban: 0 },
+        { text: "22. Lay-up sering digunakan dekat ring karena …", options: ["peluang mencetak poin lebih besar", "permainan lebih lambat", "bola lebih ringan", "lawan berhenti bermain", "skor berkurang"], jawaban: 0 },
+        { text: "23. Passing cepat dalam basket membantu tim …", options: ["membangun serangan lebih efektif", "menghentikan permainan", "kehilangan bola", "memperlambat laga", "mengurangi poin"], jawaban: 0 },
+        { text: "24. Traveling terjadi ketika pemain …", options: ["berjalan tanpa melakukan dribble", "melakukan passing", "mencetak angka", "melakukan rebound", "menggiring bola cepat"], jawaban: 0 },
+        { text: "25. Rebound penting dilakukan agar tim bisa …", options: ["mendapatkan bola pantul", "menghentikan lawan", "mengganti pemain", "mengurangi skor", "menghentikan laga"], jawaban: 0 },
+        { text: "26. Pemain basket memerlukan stamina baik karena permainan berlangsung …", options: ["cepat dan aktif", "sangat lambat", "tanpa gerakan", "singkat sekali", "sedikit pemain"], jawaban: 0 },
+        { text: "27. Free throw diberikan kepada pemain setelah terjadi …", options: ["pelanggaran tertentu", "gol bunuh diri", "pergantian pemain", "bola keluar", "rebound gagal"], jawaban: 0 },
+        { text: "28. Shooting yang baik harus memperhatikan …", options: ["arah dan kekuatan tembakan", "warna bola", "jumlah penonton", "bentuk lapangan", "suara wasit"], jawaban: 0 },
+        { text: "29. Kerja sama tim dalam basket diperlukan agar …", options: ["serangan menjadi lebih efektif", "pemain cepat lelah", "pertandingan berhenti", "lawan menang", "skor berkurang"], jawaban: 0 },
+        { text: "30. Sikap disiplin saat bermain basket menunjukkan perilaku …", options: ["sportif", "egois", "kasar", "malas", "sombong"], jawaban: 0 }
+    ];
+
+    // ========== SOAL BAHASA LAMPUNG (30 SOAL) ==========
+    const soalLampung = [
+        { text: "1. Motif binatang pada kain tapis digunakan karena masyarakat Lampung menghargai …", options: ["alam sekitar", "kendaraan", "teknologi", "permainan", "gedung tinggi"], jawaban: 0 },
+        { text: "2. Jika kain tapis memiliki motif candi stupa, maka kain tersebut menunjukkan pengaruh budaya …", options: ["Hindu-Buddha", "Barat", "Jepang", "modern", "Arab"], jawaban: 0 },
+        { text: "3. Luas Provinsi Lampung yang cukup besar membuat Lampung memiliki …", options: ["keberagaman budaya", "sedikit penduduk", "satu adat saja", "tidak ada tradisi", "sedikit bahasa"], jawaban: 0 },
+        { text: "4. Tekang pada tapis berhubungan dengan proses …", options: ["menghias kain", "memasak", "bertani", "bermain musik", "berdagang"], jawaban: 0 },
+        { text: "5. Pantis atau lilit sarang lebah pada tapis berfungsi sebagai …", options: ["penghias kain", "alat musik", "senjata adat", "alat olahraga", "permainan rakyat"], jawaban: 0 },
+        { text: "6. Warna kuning pada kain tapis dibuat menggunakan …", options: ["bahan pewarna alami", "minyak tanah", "pasir laut", "batu kapur", "plastik"], jawaban: 0 },
+        { text: "7. Contoh hasil karya seni sulam Lampung adalah …", options: ["tapis dan selendang", "meja dan kursi", "topi dan sepatu", "tombak dan keris", "piring dan gelas"], jawaban: 0 },
+        { text: "8. Motif nada pada tapis melambangkan …", options: ["keharmonisan", "kesedihan", "kemarahan", "ketakutan", "kelemahan"], jawaban: 0 },
+        { text: "9. Kain tapis dipakai saat acara adat karena menjadi simbol …", options: ["budaya Lampung", "permainan rakyat", "olahraga daerah", "teknologi modern", "perdagangan"], jawaban: 0 },
+        { text: "10. Motif binatang pada tapis memiliki arti …", options: ["kekuatan dan kehidupan", "kemarahan", "kelemahan", "ketakutan", "kesedihan"], jawaban: 0 },
+        { text: "11. Tapis Lampung dibuat dengan teliti agar hasilnya …", options: ["indah dan bernilai seni", "cepat rusak", "mudah sobek", "polos", "sederhana"], jawaban: 0 },
+        { text: "12. Jika budaya tapis tidak dijaga maka …", options: ["budaya daerah bisa hilang", "budaya semakin maju", "tapis makin terkenal", "adat makin kuat", "masyarakat bertambah"], jawaban: 0 },
+        { text: "13. Benang emas pada tapis digunakan supaya kain terlihat …", options: ["mewah", "kusam", "tipis", "kasar", "gelap"], jawaban: 0 },
+        { text: "14. Motif candi stupa pada tapis menunjukkan masyarakat Lampung menghargai …", options: ["sejarah budaya", "teknologi", "kendaraan", "permainan", "perdagangan"], jawaban: 0 },
+        { text: "15. Salah satu cara melestarikan tapis adalah …", options: ["mempelajarinya", "melupakannya", "membuangnya", "merusaknya", "menggantinya"], jawaban: 0 },
+        { text: "16. Motif naga pada tapis biasanya melambangkan …", options: ["keberanian", "kemalasan", "ketakutan", "kesedihan", "kelemahan"], jawaban: 0 },
+        { text: "17. Warna kuning pada tapis sering diartikan sebagai simbol …", options: ["kebesaran", "kemarahan", "kesedihan", "kemiskinan", "kelemahan"], jawaban: 0 },
+        { text: "18. Tapis termasuk karya seni daerah yang diwariskan secara …", options: ["turun-temurun", "mendadak", "modern", "asing", "bebas"], jawaban: 0 },
+        { text: "19. Motif nada dibuat agar menggambarkan kehidupan yang …", options: ["harmonis", "penuh marah", "sedih", "takut", "lemah"], jawaban: 0 },
+        { text: "20. Masyarakat Lampung menjaga budaya tapis agar …", options: ["tetap lestari", "cepat hilang", "rusak", "dilupakan", "ditinggalkan"], jawaban: 0 },
+        { text: "21. Sulaman pada tapis dibuat menggunakan …", options: ["benang emas atau perak", "plastik", "kayu", "kaca", "batu"], jawaban: 0 },
+        { text: "22. Motif binatang pada tapis terinspirasi dari …", options: ["alam sekitar", "gedung tinggi", "teknologi", "kendaraan", "permainan digital"], jawaban: 0 },
+        { text: "23. Tapis Lampung menjadi identitas budaya masyarakat …", options: ["Lampung", "Jawa", "Sunda", "Bali", "Betawi"], jawaban: 0 },
+        { text: "24. Tekang dilakukan supaya tapis terlihat lebih …", options: ["menarik", "kusam", "polos", "gelap", "rusak"], jawaban: 0 },
+        { text: "25. Motif pada tapis dibuat tidak sembarangan karena memiliki …", options: ["makna tertentu", "harga murah", "bentuk sama", "warna biasa", "ukuran kecil"], jawaban: 0 },
+        { text: "26. Seni sulam Lampung harus dijaga karena termasuk …", options: ["warisan budaya", "permainan modern", "teknologi", "olahraga", "perdagangan"], jawaban: 0 },
+        { text: "27. Kain tapis biasanya digunakan dalam kegiatan …", options: ["upacara adat", "balapan", "olahraga", "permainan", "belajar biasa"], jawaban: 0 },
+        { text: "28. Semakin rumit motif tapis maka …", options: ["nilai seni semakin tinggi", "kain semakin murah", "mudah dibuat", "cepat rusak", "warna hilang"], jawaban: 0 },
+        { text: "29. Motif candi stupa menjadi bukti adanya …", options: ["pengaruh budaya lama", "permainan modern", "teknologi baru", "kendaraan tradisional", "perlombaan adat"], jawaban: 0 },
+        { text: "30. Budaya tapis mencerminkan masyarakat Lampung yang …", options: ["menghargai seni dan tradisi", "melupakan adat", "tidak suka budaya", "membenci seni", "tidak memiliki sejarah"], jawaban: 0 }
+    ];
+
+    const mapels = [
+        { id: "pjok", nama: "⚽ PJOK", icon: "⚽", jumlah: 30, soal: soalPJOK },
+        { id: "lampung", nama: "🦅 Bahasa Lampung", icon: "🦅", jumlah: 30, soal: soalLampung }
+    ];
+
+    let currentUser = null;
+    let currentMapel = null;
+    let currentIndex = 0;
+    let soalAcak = [];
+    let jawabanUser = [];
+    let raguStatus = [];
+    let ujianSelesai = false;
+    let nilaiAkhir = null;
+    let ujianDimulai = false;
+    let isBlocked = false;
+
+    let nilaiMapel = { pjok: null, lampung: null };
+    let jawabanMapel = { pjok: [], lampung: [] };
+    let raguMapel = { pjok: [], lampung: [] };
+    let ujianSelesaiMapel = { pjok: false, lampung: false };
+    let soalAcakMapel = { pjok: [], lampung: [] };
+    let ujianDimulaiMapel = { pjok: false, lampung: false };
+
+    function shuffleArray(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    }
+
+    function acakSoal(mapelId) {
+        const mapel = mapels.find(m => m.id === mapelId);
+        const soalAsli = [...mapel.soal];
+        soalAcakMapel[mapelId] = shuffleArray(soalAsli);
+        jawabanMapel[mapelId] = Array(soalAcakMapel[mapelId].length).fill(null);
+        raguMapel[mapelId] = Array(soalAcakMapel[mapelId].length).fill(false);
+    }
+
+    function triggerBlock() {
+        if (ujianDimulai && !ujianSelesai) {
+            isBlocked = true;
+            document.getElementById('unlockModal').style.display = 'block';
+            document.getElementById('mainApp').style.opacity = '0.3';
+            document.getElementById('mainApp').style.pointerEvents = 'none';
+        } else {
+            logout();
+        }
+    }
+
+    function unlockWithToken() {
+        const token = document.getElementById('unlockToken').value.trim().toLowerCase();
+        if (token === VALID_TOKEN) {
+            isBlocked = false;
+            document.getElementById('unlockModal').style.display = 'none';
+            document.getElementById('mainApp').style.opacity = '1';
+            document.getElementById('mainApp').style.pointerEvents = 'auto';
+            document.getElementById('unlockToken').value = '';
+            document.getElementById('unlockError').innerText = '';
+            alert('✅ Berhasil dibuka! Lanjutkan ujian Anda.');
+        } else {
+            document.getElementById('unlockError').innerText = 'Token salah!';
+        }
+    }
+
+    function checkAndShowTab(tabId) {
+        if (isBlocked) {
+            alert('⚠️ Akun Anda terblokir! Masukkan token untuk melanjutkan.');
+            return;
+        }
+        if ((tabId === 'tab1' || tabId === 'tab3') && ujianDimulai && !ujianSelesai) {
+            triggerBlock();
+            return;
+        }
+        showTab(tabId);
+    }
+
+    function showTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        event.target.classList.add('active');
+        if (tabId === 'tab2' && currentMapel) renderSoalLengkap();
+        if (tabId === 'tab3') renderNilai();
+    }
+
+    function updateTabStatus() {
+        const tabMapelBtn = document.getElementById('tabMapelBtn');
+        const tabNilaiBtn = document.getElementById('tabNilaiBtn');
+        if (ujianDimulai && !ujianSelesai) {
+            tabMapelBtn.classList.add('disabled');
+            tabNilaiBtn.classList.add('disabled');
+        } else {
+            tabMapelBtn.classList.remove('disabled');
+            tabNilaiBtn.classList.remove('disabled');
+        }
+    }
+
+    function pilihMapel(mapelId, mapelNama) {
+        if (isBlocked) {
+            alert('⚠️ Akun terblokir! Masukkan token untuk melanjutkan.');
+            return;
+        }
+        if (ujianDimulai && !ujianSelesai) {
+            triggerBlock();
+            return;
+        }
+        currentMapel = { id: mapelId, nama: mapelNama };
+        if (!soalAcakMapel[mapelId] || soalAcakMapel[mapelId].length === 0) {
+            acakSoal(mapelId);
+        }
+        soalAcak = soalAcakMapel[mapelId];
+        jawabanUser = jawabanMapel[mapelId];
+        raguStatus = raguMapel[mapelId];
+        ujianSelesai = ujianSelesaiMapel[mapelId];
+        nilaiAkhir = nilaiMapel[mapelId];
+        ujianDimulai = ujianDimulaiMapel[mapelId];
+        currentIndex = 0;
+        simpanData();
+        renderMapelGrid();
+        renderSoalLengkap();
+        updateTabStatus();
+        showTab('tab2');
+    }
+
+    function renderMapelGrid() {
+        const grid = document.getElementById('mapelGrid');
+        grid.innerHTML = '';
+        mapels.forEach(mapel => {
+            const selesai = ujianSelesaiMapel[mapel.id];
+            const dimulai = ujianDimulaiMapel[mapel.id];
+            const nilai = nilaiMapel[mapel.id];
+            let status = '';
+            if (selesai) {
+                status = `✅ Nilai: ${nilai}`;
+            } else if (dimulai) {
+                status = `⏳ Sedang dikerjakan (terkunci)`;
+            } else {
+                status = `📝 ${mapel.jumlah} soal`;
+            }
+            const isSelected = currentMapel && currentMapel.id === mapel.id;
+            const isDisabled = dimulai && !selesai;
+            const card = document.createElement('div');
+            card.className = `mapel-card ${isSelected ? 'selected' : ''} ${isDisabled ? 'disabled' : ''}`;
+            card.innerHTML = `
+                <div class="icon">${mapel.icon}</div>
+                <h3>${mapel.nama}</h3>
+                <p>${mapel.jumlah} Soal</p>
+                <p style="font-size:12px; margin-top:10px;">${status}</p>
+                ${isDisabled ? '<p style="font-size:10px; margin-top:5px;">🔒 Selesaikan ujian dulu</p>' : ''}
+            `;
+            if (!isDisabled) {
+                card.onclick = () => pilihMapel(mapel.id, mapel.nama);
+            }
+            grid.appendChild(card);
+        });
+    }
+
+    function renderSoalLengkap() {
+        const container = document.getElementById('soalContainer');
+        if (!currentMapel) {
+            container.innerHTML = `<div class="empty-state"><div class="icon">📌</div><h3>Belum pilih mapel</h3><p>Pilih di Tab 1</p></div>`;
+            return;
+        }
+        if (ujianSelesai) {
+            container.innerHTML = `
+                <div class="info-card"><h3>${currentMapel.icon} ${currentMapel.nama}</h3><div class="score-box"><h2>${nilaiAkhir}</h2><p>Nilai Akhir</p></div>
+                <button class="btn-reset" onclick="resetMapel()">🔄 Reset & Ulang</button></div>
+                <div class="warning-box">✅ Ujian selesai! Jawaban tidak bisa diganti.</div>`;
+            return;
+        }
+        const terjawab = jawabanUser.filter(j => j !== null).length;
+        const persen = (terjawab / soalAcak.length) * 100;
+        let html = `
+            <div class="info-card">
+                <h3>${currentMapel.icon} ${currentMapel.nama}</h3>
+                <div class="progress-bar-container"><div class="progress-fill" style="width: ${persen}%"></div></div>
+                <p>📝 ${terjawab}/${soalAcak.length} terjawab | ⚠️ ${raguStatus.filter(r=>r===true).length} ragu-ragu</p>
+                ${ujianDimulai ? '<p style="background:rgba(0,0,0,0.3); padding:5px; border-radius:10px; margin-top:10px;">🔒 Ujian sedang berlangsung - Jangan klik Pilih Mapel atau Data Nilai!</p>' : ''}
+            </div>
+            <div class="exam-layout">
+                <div class="question-nav">
+                    <h4>📋 Navigasi Soal</h4>
+                    <div class="nav-grid" id="navGrid"></div>
+                    <div class="nav-legend">
+                        <div class="legend-item"><div class="legend-box" style="background:#28a745;"></div><span>Sudah dijawab</span></div>
+                        <div class="legend-item"><div class="legend-box" style="background:#ffc107;"></div><span>Ragu-ragu</span></div>
+                        <div class="legend-item"><div class="legend-box" style="background:#1e7e34;"></div><span>Soal aktif</span></div>
+                        <div class="legend-item"><div class="legend-box" style="background:white;border:1px solid #ddd;"></div><span>Belum dijawab</span></div>
+                    </div>
+                </div>
+                <div class="question-main">
+                    <div class="question">
+                        <div class="question-text"><strong>Soal ${currentIndex+1} dari ${soalAcak.length}</strong><br>${soalAcak[currentIndex].text}</div>
+                        <div class="options">
+                            ${soalAcak[currentIndex].options.map((opt, idx) => `
+                                <label class="option"><input type="radio" name="jawaban" value="${idx}" ${jawabanUser[currentIndex] === idx ? 'checked' : ''}><span>${String.fromCharCode(65+idx)}. ${opt}</span></label>
+                            `).join('')}
+                        </div>
+                    </div>
+                    <div class="nav-buttons">
+                        <button class="nav-btn" onclick="prevSoal()">◀ Sebelumnya</button>
+                        <button class="nav-btn ragu-btn ${raguStatus[currentIndex] ? 'active' : ''}" onclick="toggleRagu()">⚠️ Ragu-ragu</button>
+                        <button class="nav-btn" onclick="nextSoal()">Selanjutnya ▶</button>
+                    </div>
+                    <button class="submit-btn" onclick="submitSoal()">✅ Kumpulkan & Nilai</button>
+                </div>
+            </div>
+        `;
+        container.innerHTML = html;
+        const navGrid = document.getElementById('navGrid');
+        if (navGrid) {
+            navGrid.innerHTML = '';
+            for (let i = 0; i < soalAcak.length; i++) {
+                const btn = document.createElement('div');
+                btn.className = 'nav-item';
+                if (jawabanUser[i] !== null) btn.classList.add('answered');
+                if (raguStatus[i]) btn.classList.add('ragu');
+                if (i === currentIndex) btn.classList.add('current');
+                btn.textContent = i + 1;
+                btn.onclick = () => { currentIndex = i; renderSoalLengkap(); };
+                navGrid.appendChild(btn);
+            }
+        }
+        document.querySelectorAll('input[name="jawaban"]').forEach(radio => {
+            radio.removeEventListener('change', handleAnswerChange);
+            radio.addEventListener('change', handleAnswerChange);
+        });
+    }
+
+    function handleAnswerChange(e) {
+        jawabanUser[currentIndex] = parseInt(e.target.value);
+        jawabanMapel[currentMapel.id] = jawabanUser;
+        if (!ujianDimulai && !ujianSelesai) {
+            ujianDimulai = true;
+            ujianDimulaiMapel[currentMapel.id] = true;
+            simpanData();
+            renderMapelGrid();
+            updateTabStatus();
+        }
+        simpanData();
+        renderSoalLengkap();
+    }
+
+    function prevSoal() { if (currentIndex > 0) { currentIndex--; renderSoalLengkap(); } }
+    function nextSoal() { if (currentIndex < soalAcak.length - 1) { currentIndex++; renderSoalLengkap(); } }
+    function toggleRagu() {
+        raguStatus[currentIndex] = !raguStatus[currentIndex];
+        raguMapel[currentMapel.id] = raguStatus;
+        simpanData();
+        renderSoalLengkap();
+    }
+
+    function submitSoal() {
+        if (ujianSelesai) { alert('Ujian sudah selesai!'); return; }
+        const belum = jawabanUser.filter(j => j === null).length;
+        if (belum > 0) { alert(`⚠️ Masih ${belum} soal belum dijawab!`); return; }
+        let benar = 0;
+        soalAcak.forEach((q, i) => { if (jawabanUser[i] === q.jawaban) benar++; });
+        nilaiAkhir = Math.round((benar / soalAcak.length) * 100);
+        ujianSelesai = true;
+        ujianDimulai = false;
+        nilaiMapel[currentMapel.id] = nilaiAkhir;
+        ujianSelesaiMapel[currentMapel.id] = true;
+        ujianDimulaiMapel[currentMapel.id] = false;
+        simpanData();
+        renderSoalLengkap();
+        renderNilai();
+        renderMapelGrid();
+        updateTabStatus();
+        alert(`✅ Selesai! Nilai: ${nilaiAkhir}`);
+    }
+
+    function resetMapel() {
+        if (confirm(`Reset ${currentMapel.nama}? Semua jawaban akan dihapus.`)) {
+            acakSoal(currentMapel.id);
+            ujianSelesaiMapel[currentMapel.id] = false;
+            ujianDimulaiMapel[currentMapel.id] = false;
+            nilaiMapel[currentMapel.id] = null;
+            soalAcak = soalAcakMapel[currentMapel.id];
+            jawabanUser = jawabanMapel[currentMapel.id];
+            raguStatus = raguMapel[currentMapel.id];
+            ujianSelesai = false;
+            ujianDimulai = false;
+            nilaiAkhir = null;
+            currentIndex = 0;
+            simpanData();
+            renderMapelGrid();
+            renderSoalLengkap();
+            renderNilai();
+            updateTabStatus();
+        }
+    }
+
+    function resetSemuaNilai() {
+        if (confirm('Reset semua nilai dan jawaban untuk kedua mapel?')) {
+            mapels.forEach(m => { 
+                acakSoal(m.id); 
+                ujianSelesaiMapel[m.id] = false; 
+                ujianDimulaiMapel[m.id] = false;
+                nilaiMapel[m.id] = null; 
+            });
+            if (currentMapel) {
+                soalAcak = soalAcakMapel[currentMapel.id];
+                jawabanUser = jawabanMapel[currentMapel.id];
+                raguStatus = raguMapel[currentMapel.id];
+                ujianSelesai = false;
+                ujianDimulai = false;
+                nilaiAkhir = null;
+                renderSoalLengkap();
+            }
+            renderMapelGrid();
+            renderNilai();
+            updateTabStatus();
+        }
+    }
+
+    function renderNilai() {
+        let total = 0, selesai = 0, rows = '';
+        mapels.forEach((m, idx) => {
+            const nilai = nilaiMapel[m.id];
+            const selesaiMapel = ujianSelesaiMapel[m.id];
+            const benar = selesaiMapel ? Math.round((nilai/100)*m.jumlah) : 0;
+            const salah = selesaiMapel ? m.jumlah - benar : 0;
+            const cls = selesaiMapel ? (nilai>=70 ? 'nilai-lulus' : 'nilai-remedial') : '';
+            const txt = selesaiMapel ? (nilai>=70 ? 'Lulus' : 'Remedial') : 'Belum';
+            if (selesaiMapel) { total += nilai; selesai++; }
+            rows += `<tr>
+                <td>${idx+1}</td>
+                <td>${m.icon} ${m.nama}</td>
+                <td>${m.jumlah}</td>
+                <td style="color:#28a745;">${selesaiMapel ? benar : '-'}</td>
+                <td style="color:#dc3545;">${selesaiMapel ? salah : '-'}</td>
+                <td><strong>${selesaiMapel ? nilai : '-'}</strong></td>
+                <td><span class="${cls}">${txt}</span></td>
+            </tr>`;
+        });
+        document.getElementById('rataRata').innerHTML = selesai>0 ? (total/selesai).toFixed(1) : 0;
+        document.getElementById('nilaiBody').innerHTML = rows;
+    }
+
+    function login() {
+        const nama = document.getElementById('namaInput').value.trim();
+        const token = document.getElementById('tokenInput').value.trim().toLowerCase();
+        if (!nama) { document.getElementById('loginError').innerText = 'Isi nama!'; return; }
+        if (token !== VALID_TOKEN) { document.getElementById('loginError').innerText = 'Token salah!'; return; }
+        currentUser = { nama, token, tanggal: new Date().toLocaleDateString() };
+        const saved = localStorage.getItem(`tryout_final_${nama}`);
+        if (saved) {
+            const data = JSON.parse(saved);
+            nilaiMapel = data.nilaiMapel || { pjok: null, lampung: null };
+            ujianSelesaiMapel = data.ujianSelesaiMapel || { pjok: false, lampung: false };
+            ujianDimulaiMapel = data.ujianDimulaiMapel || { pjok: false, lampung: false };
+            soalAcakMapel = data.soalAcakMapel || { pjok: [], lampung: [] };
+            jawabanMapel = data.jawabanMapel || { pjok: [], lampung: [] };
+            raguMapel = data.raguMapel || { pjok: [], lampung: [] };
+            currentMapel = data.currentMapel || null;
+            if (currentMapel) { ujianDimulai = ujianDimulaiMapel[currentMapel.id] || false; }
+        }
+        mapels.forEach(m => { if (!soalAcakMapel[m.id] || soalAcakMapel[m.id].length === 0) acakSoal(m.id); });
+        if (currentMapel) {
+            soalAcak = soalAcakMapel[currentMapel.id];
+            jawabanUser = jawabanMapel[currentMapel.id];
+            raguStatus = raguMapel[currentMapel.id];
+            ujianSelesai = ujianSelesaiMapel[currentMapel.id];
+            nilaiAkhir = nilaiMapel[currentMapel.id];
+            ujianDimulai = ujianDimulaiMapel[currentMapel.id];
+        }
+        document.getElementById('userName').innerHTML = `👤 ${nama}`;
+        document.getElementById('loginBox').style.display = 'none';
+        document.getElementById('mainApp').style.display = 'block';
+        renderMapelGrid();
+        renderNilai();
+        updateTabStatus();
+        if (currentMapel) renderSoalLengkap();
+    }
+
+    function simpanData() {
+        if (currentUser) {
+            localStorage.setItem(`tryout_final_${currentUser.nama}`, JSON.stringify({
+                nilaiMapel, ujianSelesaiMapel, ujianDimulaiMapel, soalAcakMapel, jawabanMapel, raguMapel, currentMapel
+            }));
+        }
+    }
+
+    function logout() {
+        if (currentUser) { localStorage.removeItem(`tryout_final_${currentUser.nama}`); }
+        currentUser = null;
+        currentMapel = null;
+        ujianDimulai = false;
+        ujianSelesai = false;
+        isBlocked = false;
+        document.getElementById('loginBox').style.display = 'block';
+        document.getElementById('mainApp').style.display = 'none';
+        document.getElementById('mainApp').style.opacity = '1';
+        document.getElementById('mainApp').style.pointerEvents = 'auto';
+        document.getElementById('namaInput').value = '';
+        document.getElementById('tokenInput').value = '';
+        document.getElementById('loginError').innerText = '';
+    }
+</script>
+</body>
+</html>
