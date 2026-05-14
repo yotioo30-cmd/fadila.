@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>📚 Try Out • PJOK + Bahasa Lampung</title>
+    <title>📚 Try Out • PJOK + Bahasa Lampung + Matematika</title>
     <style>
         * {
             margin: 0;
@@ -480,7 +480,7 @@
 <div class="container">
     <div id="loginBox" class="login-box">
         <h1>📚 Try Out</h1>
-        <p>PJOK + Bahasa Lampung</p>
+        <p>PJOK + Bahasa Lampung + Matematika</p>
         <input type="text" id="namaInput" placeholder="Nama Lengkap">
         <input type="password" id="tokenInput" placeholder="Token Kode">
         <button onclick="login()">🚀 Masuk</button>
@@ -501,7 +501,7 @@
 
     <div id="mainApp" style="display:none;">
         <div class="header">
-            <h2>📚 Try Out • PJOK + Bahasa Lampung</h2>
+            <h2>📚 Try Out • PJOK + Bahasa Lampung + Matematika</h2>
             <div>
                 <span id="userName" style="margin-right:15px; font-weight:bold;"></span>
                 <button class="logout-btn" onclick="triggerBlock()">🚪 Keluar</button>
@@ -545,65 +545,95 @@
 <script>
     const VALID_TOKEN = "fadila putri";
 
-    // ========== SOAL PJOK PENALARAN (20 SOAL) ==========
+    // ========== SOAL MATEMATIKA (25 SOAL SESUAI YANG ANDA KIRIM) ==========
+    const soalMatematika = [
+        { text: "1. Data nilai: 70, 80, 90, 60, 50. Rata-rata data adalah ((70+80+90+60+50)÷5)", options: ["68", "70", "72", "74", "76"], jawaban: 1, cara: "Rata-rata = (70+80+90+60+50) ÷ 5 = 350 ÷ 5 = 70" },
+        { text: "2. Data: 5, 8, 12, 15, 20. Jangkauan data adalah (20-5)", options: ["10", "12", "13", "15", "18"], jawaban: 3, cara: "Jangkauan = nilai tertinggi - nilai terendah = 20 - 5 = 15" },
+        { text: "3. Data: 7, 8, 9, 8, 10, 8, 6. Modus data adalah angka yang paling sering muncul", options: ["6", "7", "8", "9", "10"], jawaban: 2, cara: "Modus adalah angka yang paling sering muncul. Angka 8 muncul 3 kali (paling banyak)." },
+        { text: "4. Rata-rata 5 bilangan adalah 60. Jika empat bilangan adalah 50, 55, 65, dan 70 maka bilangan terakhir dicari dengan (60×5) lalu dikurangi jumlah 4 bilangan", options: ["50", "55", "60", "65", "70"], jawaban: 2, cara: "Jumlah 5 bilangan = 60 × 5 = 300. Jumlah 4 bilangan = 50+55+65+70 = 240. Bilangan terakhir = 300 - 240 = 60" },
+        { text: "5. Sebuah dadu dilempar sekali. Peluang muncul angka ganjil adalah angka 1,3,5 jadi (3/6)", options: ["1/6", "2/6", "3/6", "4/6", "5/6"], jawaban: 2, cara: "Angka ganjil = {1,3,5} ada 3. Ruang sampel = 6. Peluang = 3/6 = 1/2" },
+        { text: "6. Sebuah koin dilempar sekali. Peluang muncul sisi angka adalah (1/2)", options: ["1/2", "1/3", "1/4", "1/5", "1"], jawaban: 0, cara: "Ruang sampel = {Angka, Gambar} = 2. Sisi angka = 1. Peluang = 1/2" },
+        { text: "7. Dari angka 1–8 peluang mengambil bilangan genap adalah 2,4,6,8 jadi (4/8)", options: ["1/8", "2/8", "3/8", "4/8", "5/8"], jawaban: 3, cara: "Bilangan genap = {2,4,6,8} ada 4. Ruang sampel = 8. Peluang = 4/8 = 1/2" },
+        { text: "8. Dalam kelas terdapat 18 laki-laki dan 12 perempuan. Peluang memilih perempuan adalah (12/30)", options: ["1/5", "2/5", "3/5", "4/5", "5/5"], jawaban: 1, cara: "Jumlah siswa = 18+12 = 30. Perempuan = 12. Peluang = 12/30 = 2/5" },
+        { text: "9. Jika P(A)=0,2 dan P(B)=0,5 saling lepas maka gunakan P(A)+P(B)", options: ["0,5", "0,6", "0,7", "0,8", "0,9"], jawaban: 2, cara: "Kejadian saling lepas: P(A∪B) = P(A) + P(B) = 0,2 + 0,5 = 0,7" },
+        { text: "10. Data: 2, 4, 5, 5, 6, 7, 5. Modus data adalah angka yang paling sering muncul", options: ["2", "4", "5", "6", "7"], jawaban: 2, cara: "Modus adalah angka yang paling sering muncul. Angka 5 muncul 3 kali (paling banyak)." },
+        { text: "11. Data: 10, 20, 30, 40. Rata-rata data adalah ((10+20+30+40)÷4)", options: ["20", "25", "30", "35", "40"], jawaban: 1, cara: "Rata-rata = (10+20+30+40) ÷ 4 = 100 ÷ 4 = 25" },
+        { text: "12. Data: 4, 9, 13, 18. Jangkauan data adalah (18-4)", options: ["12", "13", "14", "15", "16"], jawaban: 2, cara: "Jangkauan = nilai tertinggi - nilai terendah = 18 - 4 = 14" },
+        { text: "13. Sebuah dadu dilempar sekali. Peluang muncul angka kurang dari 4 adalah 1,2,3 jadi (3/6)", options: ["1/6", "2/6", "3/6", "4/6", "5/6"], jawaban: 2, cara: "Angka kurang dari 4 = {1,2,3} ada 3. Ruang sampel = 6. Peluang = 3/6 = 1/2" },
+        { text: "14. Dalam kotak ada 6 bola merah dan 4 bola putih. Peluang mengambil bola putih adalah (4/10)", options: ["1/10", "2/10", "3/10", "4/10", "5/10"], jawaban: 3, cara: "Jumlah bola = 6+4 = 10. Bola putih = 4. Peluang = 4/10 = 2/5" },
+        { text: "15. Jika P(A)=0,1 dan P(B)=0,4 saling lepas maka gunakan P(A)+P(B)", options: ["0,2", "0,3", "0,4", "0,5", "0,6"], jawaban: 3, cara: "Kejadian saling lepas: P(A∪B) = P(A) + P(B) = 0,1 + 0,4 = 0,5" },
+        { text: "16. Data: 6, 8, 10, 12, 14. Rata-rata data adalah ((6+8+10+12+14)÷5)", options: ["8", "9", "10", "11", "12"], jawaban: 2, cara: "Rata-rata = (6+8+10+12+14) ÷ 5 = 50 ÷ 5 = 10" },
+        { text: "17. Data: 11, 15, 18, 20. Jangkauan data adalah (20-11)", options: ["7", "8", "9", "10", "11"], jawaban: 2, cara: "Jangkauan = nilai tertinggi - nilai terendah = 20 - 11 = 9" },
+        { text: "18. Data: 9, 9, 10, 11, 12. Modus data adalah angka yang paling sering muncul", options: ["9", "10", "11", "12", "13"], jawaban: 0, cara: "Modus adalah angka yang paling sering muncul. Angka 9 muncul 2 kali (paling banyak)." },
+        { text: "19. Sebuah koin dilempar sekali. Peluang muncul gambar adalah (1/2)", options: ["1/2", "1/3", "1/4", "1/5", "1"], jawaban: 0, cara: "Ruang sampel = {Angka, Gambar} = 2. Sisi gambar = 1. Peluang = 1/2" },
+        { text: "20. Jika P(A)=0,3 dan P(B)=0,2 saling lepas maka gunakan P(A)+P(B)", options: ["0,3", "0,4", "0,5", "0,6", "0,7"], jawaban: 2, cara: "Kejadian saling lepas: P(A∪B) = P(A) + P(B) = 0,3 + 0,2 = 0,5" },
+        { text: "21. Rata-rata dari 15, 20, 25 adalah ((15+20+25)÷3)", options: ["15", "18", "20", "22", "25"], jawaban: 2, cara: "Rata-rata = (15+20+25) ÷ 3 = 60 ÷ 3 = 20" },
+        { text: "22. Data: 3, 7, 12, 18. Jangkauan data adalah (18-3)", options: ["12", "13", "14", "15", "16"], jawaban: 3, cara: "Jangkauan = nilai tertinggi - nilai terendah = 18 - 3 = 15" },
+        { text: "23. Sebuah dadu dilempar sekali. Peluang muncul angka 5 adalah (1/6)", options: ["1/6", "2/6", "3/6", "4/6", "5/6"], jawaban: 0, cara: "Angka 5 hanya 1. Ruang sampel = 6. Peluang = 1/6" },
+        { text: "24. Dalam kotak terdapat 7 bola hitam dan 3 bola putih. Peluang mengambil bola hitam adalah (7/10)", options: ["4/10", "5/10", "6/10", "7/10", "8/10"], jawaban: 3, cara: "Jumlah bola = 7+3 = 10. Bola hitam = 7. Peluang = 7/10" },
+        { text: "25. Jika P(A)=0,5 dan P(B)=0,2 saling lepas maka gunakan P(A)+P(B)", options: ["0,5", "0,6", "0,7", "0,8", "0,9"], jawaban: 2, cara: "Kejadian saling lepas: P(A∪B) = P(A) + P(B) = 0,5 + 0,2 = 0,7" }
+    ];
+
+    // ========== SOAL PJOK (20 SOAL) ==========
     const soalPJOK = [
-        { text: "1. Dalam pertandingan futsal, sebuah tim lebih sering kehilangan bola karena setiap pemain ingin membawa bola sendiri sampai ke depan gawang lawan. Akibatnya serangan mudah dihentikan dan lawan dapat melakukan serangan balik dengan cepat. Berdasarkan kondisi tersebut, cara paling tepat untuk memperbaiki permainan tim adalah …", options: ["memperbanyak dribble individu", "meningkatkan kerja sama dan ketepatan passing", "mengurangi jumlah pemain bertahan", "meminta tambahan waktu pertandingan", "memperlambat gerakan kiper"], jawaban: 1 },
-        { text: "2. Pada pertandingan sepak bola lapangan besar, seorang pemain bertahan sering meninggalkan posisinya untuk membantu menyerang tanpa memperhatikan area belakang. Akibatnya lawan berkali-kali mendapatkan peluang mencetak gol melalui serangan balik cepat. Dari situasi tersebut dapat disimpulkan bahwa …", options: ["semua pemain harus fokus menyerang", "pemain belakang tidak memerlukan disiplin posisi", "keseimbangan antara menyerang dan bertahan sangat penting", "penyerang harus menggantikan posisi kiper", "pertandingan akan lebih mudah dimenangkan tanpa bek"], jawaban: 2 },
-        { text: "3. Seorang pemain melakukan tendangan sangat keras ke arah gawang, tetapi sebagian besar tendangannya melenceng dan tidak tepat sasaran. Berdasarkan keadaan tersebut, hal utama yang perlu diperbaiki pemain adalah …", options: ["teknik mengontrol arah tendangan", "ukuran lapangan pertandingan", "jumlah pemain lawan", "posisi penonton di stadion", "warna sepatu yang digunakan"], jawaban: 0 },
-        { text: "4. Dalam pertandingan futsal, pergantian pemain dilakukan berkali-kali dalam waktu singkat agar tempo permainan tetap cepat dan kondisi fisik pemain tetap terjaga. Hal tersebut menunjukkan bahwa futsal merupakan olahraga yang membutuhkan …", options: ["gerakan lambat dan santai", "stamina dan konsentrasi tinggi", "sedikit kerja sama tim", "waktu istirahat yang panjang", "permainan tanpa strategi"], jawaban: 1 },
-        { text: "5. Seorang pemain sepak bola tetap menerima keputusan wasit walaupun dirinya merasa tidak diuntungkan. Sikap pemain tersebut menunjukkan …", options: ["rasa takut kepada lawan", "kurang percaya diri dalam bermain", "sikap sportif dan menghargai aturan permainan", "keinginan untuk menghentikan pertandingan", "kemampuan teknik yang rendah"], jawaban: 2 },
-        { text: "6. Sebuah tim voli sering gagal membangun serangan karena pemain penerima servis tidak mampu mengarahkan bola dengan baik kepada setter. Jika keadaan tersebut terus terjadi, maka tim akan …", options: ["lebih mudah melakukan smash", "kesulitan menyusun pola serangan yang efektif", "lebih sering mendapatkan poin otomatis", "membuat lawan kesulitan menyerang", "memiliki pertahanan yang lebih kuat"], jawaban: 1 },
-        { text: "7. Dalam pertandingan voli, seorang smasher memukul bola sangat keras tetapi arah pukulannya sering keluar lapangan. Berdasarkan situasi tersebut dapat disimpulkan bahwa pemain kurang memperhatikan …", options: ["kekuatan tanpa arah pukulan", "tinggi badan lawan", "jumlah penonton pertandingan", "teknik dan ketepatan arah smash", "posisi wasit di lapangan"], jawaban: 3 },
-        { text: "8. Saat pertandingan berlangsung, pemain voli saling diam ketika menerima bola sehingga beberapa kali terjadi tabrakan antarpemain dan bola jatuh di area sendiri. Faktor utama yang menyebabkan keadaan tersebut adalah …", options: ["kurangnya komunikasi dan kerja sama tim", "ukuran lapangan terlalu besar", "jumlah pemain terlalu sedikit", "bola terlalu ringan", "net terlalu tinggi"], jawaban: 0 },
-        { text: "9. Dalam permainan voli, teknik blocking dilakukan tepat di depan net ketika lawan melakukan smash keras. Tujuan utama teknik tersebut adalah …", options: ["mempercepat pergantian pemain", "menghentikan serangan lawan sebelum melewati net", "membantu lawan mendapatkan poin", "mengurangi jumlah pemain bertahan", "membuat permainan menjadi lambat"], jawaban: 1 },
-        { text: "10. Seorang pemain melakukan servis terlalu lemah sehingga lawan dapat dengan mudah menerima dan langsung melakukan serangan cepat. Dari keadaan tersebut dapat disimpulkan bahwa servis yang baik harus memiliki …", options: ["arah keluar lapangan", "kecepatan yang sangat lambat", "kekuatan dan penempatan bola yang tepat", "posisi badan membelakangi net", "pantulan bola yang rendah"], jawaban: 2 },
-        { text: "11. Tim voli yang memiliki passing baik biasanya lebih mudah membangun serangan dibandingkan tim yang passing-nya buruk. Hal tersebut terjadi karena …", options: ["passing membantu mengatur pola permainan dengan lebih terarah", "passing membuat pertandingan berhenti", "passing mengurangi jumlah lawan", "passing hanya digunakan pemain belakang", "passing membuat smash menjadi tidak penting"], jawaban: 0 },
-        { text: "12. Dalam permainan voli, rotasi pemain dilakukan ketika tim mendapatkan hak servis dari lawan. Tujuan aturan tersebut adalah …", options: ["mempercepat akhir pertandingan", "membuat semua pemain berpindah posisi secara merata", "membantu lawan mencetak poin", "mengurangi jumlah pemain inti", "membuat permainan menjadi lebih lambat"], jawaban: 1 },
-        { text: "13. Seorang pemain melompat tinggi saat melakukan smash agar pukulan bola menjadi lebih tajam dan sulit diterima lawan. Berdasarkan situasi tersebut, keberhasilan smash dipengaruhi oleh …", options: ["tinggi lompatan dan ketepatan pukulan", "jumlah penonton pertandingan", "warna bola yang digunakan", "posisi wasit di lapangan", "ukuran sepatu pemain"], jawaban: 0 },
-        { text: "14. Tim voli yang memiliki komunikasi baik biasanya bermain lebih teratur karena setiap pemain …", options: ["bermain sendiri-sendiri", "mengetahui posisi dan tugas masing-masing", "fokus menyerang tanpa bertahan", "hanya menunggu bola datang", "tidak memerlukan strategi permainan"], jawaban: 1 },
-        { text: "15. Dalam pertandingan basket, seorang pemain terus membawa bola sendiri tanpa memberikan passing kepada rekan setim. Akibatnya lawan lebih mudah membaca arah permainan dan merebut bola. Berdasarkan keadaan tersebut, hal yang paling perlu diperbaiki adalah …", options: ["tinggi badan pemain", "kerja sama dan ketepatan passing", "warna seragam tim", "ukuran lapangan basket", "posisi bangku cadangan"], jawaban: 1 },
-        { text: "16. Seorang pemain basket melakukan lay-up dari jarak dekat ring sehingga peluang bola masuk menjadi lebih besar dibandingkan shooting dari jarak jauh. Hal tersebut terjadi karena …", options: ["posisi dekat ring membuat tembakan lebih mudah terarah", "pemain tidak perlu melompat saat lay-up", "ukuran bola menjadi lebih kecil", "lawan tidak diperbolehkan bergerak", "permainan dihentikan sementara"], jawaban: 0 },
-        { text: "17. Dalam permainan basket, pemain yang berjalan sambil membawa bola tanpa melakukan dribble akan dianggap melakukan pelanggaran. Pelanggaran tersebut disebut …", options: ["rebound", "assist", "traveling", "shooting foul", "blocking foul"], jawaban: 2 },
-        { text: "18. Sebuah tim basket sering gagal mendapatkan bola pantul setelah shooting tidak masuk sehingga lawan lebih banyak menguasai bola. Teknik yang paling perlu ditingkatkan oleh tim tersebut adalah …", options: ["lay-up", "passing pendek", "shooting jarak jauh", "rebound", "free throw"], jawaban: 3 },
-        { text: "19. Pemain basket harus memiliki stamina yang baik karena permainan berlangsung cepat dan membutuhkan banyak gerakan aktif selama pertandingan. Jika stamina pemain kurang baik maka kemungkinan yang terjadi adalah …", options: ["permainan menjadi lebih efektif", "pemain lebih mudah kehilangan fokus dan kelelahan", "lawan akan berhenti menyerang", "jumlah poin bertambah otomatis", "waktu pertandingan menjadi lebih singkat"], jawaban: 1 },
-        { text: "20. Dalam pertandingan basket, seorang pemain tetap mematuhi aturan permainan dan tidak memprotes keputusan wasit secara berlebihan walaupun timnya kalah. Sikap tersebut menunjukkan bahwa pemain memiliki …", options: ["rasa takut bertanding", "sikap sportif dan disiplin", "kemampuan teknik yang rendah", "keinginan meninggalkan pertandingan", "rasa tidak percaya diri"], jawaban: 1 }
+        { text: "1. Dalam pertandingan futsal, sebuah tim lebih sering kehilangan bola karena setiap pemain ingin membawa bola sendiri. Cara paling tepat untuk memperbaiki permainan tim adalah...", options: ["memperbanyak dribble individu", "meningkatkan kerja sama dan ketepatan passing", "mengurangi jumlah pemain bertahan", "meminta tambahan waktu", "memperlambat gerakan kiper"], jawaban: 1, cara: "Kerja sama tim dan passing yang tepat adalah kunci permainan futsal" },
+        { text: "2. Pemain bertahan sering meninggalkan posisi untuk membantu menyerang, akibatnya lawan berkali-kali mencetak gol. Kesimpulannya...", options: ["semua pemain fokus menyerang", "pemain belakang tidak perlu disiplin", "keseimbangan menyerang dan bertahan penting", "penyerang gantikan kiper", "pertandingan mudah dimenangkan tanpa bek"], jawaban: 2, cara: "Keseimbangan strategi menyerang dan bertahan sangat krusial" },
+        { text: "3. Pemain melakukan tendangan keras tetapi melenceng. Hal yang perlu diperbaiki adalah...", options: ["teknik mengontrol arah", "ukuran lapangan", "jumlah pemain lawan", "posisi penonton", "warna sepatu"], jawaban: 0, cara: "Teknik mengontrol arah lebih penting daripada kekuatan" },
+        { text: "4. Dalam futsal, pergantian pemain dilakukan berkali-kali agar tempo tetap cepat. Futsal membutuhkan...", options: ["gerakan lambat", "stamina dan konsentrasi tinggi", "sedikit kerja sama", "waktu istirahat panjang", "permainan tanpa strategi"], jawaban: 1, cara: "Futsal membutuhkan stamina dan konsentrasi tinggi" },
+        { text: "5. Pemain sepak bola menerima keputusan wasit walaupun tidak diuntungkan. Sikap tersebut menunjukkan...", options: ["takut lawan", "kurang percaya diri", "sportif dan menghargai aturan", "ingin hentikan pertandingan", "teknik rendah"], jawaban: 2, cara: "Sportivitas dan menghargai aturan adalah sikap terpuji" },
+        { text: "6. Tim voli gagal membangun serangan karena penerima servis tidak mampu mengarahkan bola ke setter. Akibatnya...", options: ["lebih mudah smash", "kesulitan menyusun pola serangan", "sering dapat poin", "lawan kesulitan menyerang", "pertahanan lebih kuat"], jawaban: 1, cara: "Passing buruk menghambat penyusunan serangan" },
+        { text: "7. Smasher memukul keras tetapi sering keluar. Pemain kurang memperhatikan...", options: ["kekuatan tanpa arah", "tinggi badan lawan", "jumlah penonton", "teknik dan ketepatan arah smash", "posisi wasit"], jawaban: 3, cara: "Ketepatan arah smash lebih penting dari kekuatan" },
+        { text: "8. Pemain voli saling diam saat menerima bola sehingga terjadi tabrakan. Faktor utamanya...", options: ["kurang komunikasi", "lapangan terlalu besar", "pemain terlalu sedikit", "bola terlalu ringan", "net terlalu tinggi"], jawaban: 0, cara: "Komunikasi tim sangat penting dalam voli" },
+        { text: "9. Teknik blocking dilakukan tepat di depan net saat lawan smash. Tujuannya...", options: ["mempercepat pergantian", "menghentikan serangan lawan", "membantu lawan", "mengurangi pemain bertahan", "membuat permainan lambat"], jawaban: 1, cara: "Blocking untuk menahan serangan lawan" },
+        { text: "10. Servis terlalu lemah sehingga lawan mudah menerima. Servis yang baik harus...", options: ["arah keluar", "kecepatan lambat", "kekuatan dan penempatan tepat", "membelakangi net", "pantulan rendah"], jawaban: 2, cara: "Servis baik harus kuat dan terarah" },
+        { text: "11. Tim dengan passing baik lebih mudah membangun serangan karena...", options: ["passing mengatur pola permainan", "passing menghentikan pertandingan", "passing mengurangi lawan", "passing hanya untuk belakang", "passing membuat smash tidak penting"], jawaban: 0, cara: "Passing yang baik mengatur pola serangan" },
+        { text: "12. Rotasi pemain voli dilakukan saat mendapat hak servis. Tujuannya...", options: ["mempercepat akhir", "semua pemain berpindah merata", "membantu lawan", "mengurangi pemain inti", "membuat permainan lambat"], jawaban: 1, cara: "Rotasi memastikan semua pemain bergantian posisi" },
+        { text: "13. Pemain melompat tinggi saat smash agar pukulan tajam. Keberhasilan smash dipengaruhi...", options: ["tinggi lompatan dan ketepatan", "jumlah penonton", "warna bola", "posisi wasit", "ukuran sepatu"], jawaban: 0, cara: "Tinggi lompatan dan ketepatan pukulan menentukan smash" },
+        { text: "14. Tim dengan komunikasi baik bermain teratur karena setiap pemain...", options: ["bermain sendiri", "tahu posisi dan tugas", "fokus menyerang", "menunggu bola", "tidak perlu strategi"], jawaban: 1, cara: "Komunikasi membuat pemahaman posisi dan tugas" },
+        { text: "15. Pemain basket terus membawa bola sendiri tanpa passing. Hal yang perlu diperbaiki...", options: ["tinggi badan", "kerja sama dan passing", "warna seragam", "ukuran lapangan", "posisi cadangan"], jawaban: 1, cara: "Kerja sama tim dan passing sangat penting" },
+        { text: "16. Lay-up dari jarak dekat lebih mudah masuk karena...", options: ["posisi dekat ring memudahkan arah", "tidak perlu lompat", "bola lebih kecil", "lawan tidak boleh bergerak", "permainan dihentikan"], jawaban: 0, cara: "Posisi dekat ring memudahkan arah tembakan" },
+        { text: "17. Pemain berjalan sambil membawa bola tanpa dribble disebut pelanggaran...", options: ["rebound", "assist", "traveling", "shooting foul", "blocking foul"], jawaban: 2, cara: "Traveling adalah pelanggaran berjalan tanpa dribble" },
+        { text: "18. Tim basket gagal mendapat bola pantul setelah shooting. Teknik yang perlu ditingkatkan...", options: ["lay-up", "passing pendek", "shooting jarak jauh", "rebound", "free throw"], jawaban: 3, cara: "Rebound adalah teknik mengambil bola pantul" },
+        { text: "19. Jika stamina pemain kurang baik maka kemungkinan yang terjadi...", options: ["permainan efektif", "mudah kehilangan fokus dan kelelahan", "lawan berhenti", "poin bertambah", "waktu lebih singkat"], jawaban: 1, cara: "Stamina buruk menyebabkan kelelahan dan kehilangan fokus" },
+        { text: "20. Pemain mematuhi aturan dan tidak memprotes keputusan wasit. Sikap tersebut menunjukkan...", options: ["takut bertanding", "sportif dan disiplin", "teknik rendah", "ingin tinggalkan pertandingan", "tidak percaya diri"], jawaban: 1, cara: "Sportivitas dan disiplin adalah sikap terpuji" }
     ];
 
     // ========== SOAL BAHASA LAMPUNG (30 SOAL) ==========
     const soalLampung = [
-        { text: "1. Motif binatang pada kain tapis digunakan karena masyarakat Lampung menghargai …", options: ["alam sekitar", "kendaraan", "teknologi", "permainan", "gedung tinggi"], jawaban: 0 },
-        { text: "2. Jika kain tapis memiliki motif candi stupa, maka kain tersebut menunjukkan pengaruh budaya …", options: ["Hindu-Buddha", "Barat", "Jepang", "modern", "Arab"], jawaban: 0 },
-        { text: "3. Luas Provinsi Lampung yang cukup besar membuat Lampung memiliki …", options: ["keberagaman budaya", "sedikit penduduk", "satu adat saja", "tidak ada tradisi", "sedikit bahasa"], jawaban: 0 },
-        { text: "4. Tekang pada tapis berhubungan dengan proses …", options: ["menghias kain", "memasak", "bertani", "bermain musik", "berdagang"], jawaban: 0 },
-        { text: "5. Pantis atau lilit sarang lebah pada tapis berfungsi sebagai …", options: ["penghias kain", "alat musik", "senjata adat", "alat olahraga", "permainan rakyat"], jawaban: 0 },
-        { text: "6. Warna kuning pada kain tapis dibuat menggunakan …", options: ["bahan pewarna alami", "minyak tanah", "pasir laut", "batu kapur", "plastik"], jawaban: 0 },
-        { text: "7. Contoh hasil karya seni sulam Lampung adalah …", options: ["tapis dan selendang", "meja dan kursi", "topi dan sepatu", "tombak dan keris", "piring dan gelas"], jawaban: 0 },
-        { text: "8. Motif nada pada tapis melambangkan …", options: ["keharmonisan", "kesedihan", "kemarahan", "ketakutan", "kelemahan"], jawaban: 0 },
-        { text: "9. Kain tapis dipakai saat acara adat karena menjadi simbol …", options: ["budaya Lampung", "permainan rakyat", "olahraga daerah", "teknologi modern", "perdagangan"], jawaban: 0 },
-        { text: "10. Motif binatang pada tapis memiliki arti …", options: ["kekuatan dan kehidupan", "kemarahan", "kelemahan", "ketakutan", "kesedihan"], jawaban: 0 },
-        { text: "11. Tapis Lampung dibuat dengan teliti agar hasilnya …", options: ["indah dan bernilai seni", "cepat rusak", "mudah sobek", "polos", "sederhana"], jawaban: 0 },
-        { text: "12. Jika budaya tapis tidak dijaga maka …", options: ["budaya daerah bisa hilang", "budaya semakin maju", "tapis makin terkenal", "adat makin kuat", "masyarakat bertambah"], jawaban: 0 },
-        { text: "13. Benang emas pada tapis digunakan supaya kain terlihat …", options: ["mewah", "kusam", "tipis", "kasar", "gelap"], jawaban: 0 },
-        { text: "14. Motif candi stupa pada tapis menunjukkan masyarakat Lampung menghargai …", options: ["sejarah budaya", "teknologi", "kendaraan", "permainan", "perdagangan"], jawaban: 0 },
-        { text: "15. Salah satu cara melestarikan tapis adalah …", options: ["mempelajarinya", "melupakannya", "membuangnya", "merusaknya", "menggantinya"], jawaban: 0 },
-        { text: "16. Motif naga pada tapis biasanya melambangkan …", options: ["keberanian", "kemalasan", "ketakutan", "kesedihan", "kelemahan"], jawaban: 0 },
-        { text: "17. Warna kuning pada tapis sering diartikan sebagai simbol …", options: ["kebesaran", "kemarahan", "kesedihan", "kemiskinan", "kelemahan"], jawaban: 0 },
-        { text: "18. Tapis termasuk karya seni daerah yang diwariskan secara …", options: ["turun-temurun", "mendadak", "modern", "asing", "bebas"], jawaban: 0 },
-        { text: "19. Motif nada dibuat agar menggambarkan kehidupan yang …", options: ["harmonis", "penuh marah", "sedih", "takut", "lemah"], jawaban: 0 },
-        { text: "20. Masyarakat Lampung menjaga budaya tapis agar …", options: ["tetap lestari", "cepat hilang", "rusak", "dilupakan", "ditinggalkan"], jawaban: 0 },
-        { text: "21. Sulaman pada tapis dibuat menggunakan …", options: ["benang emas atau perak", "plastik", "kayu", "kaca", "batu"], jawaban: 0 },
-        { text: "22. Motif binatang pada tapis terinspirasi dari …", options: ["alam sekitar", "gedung tinggi", "teknologi", "kendaraan", "permainan digital"], jawaban: 0 },
-        { text: "23. Tapis Lampung menjadi identitas budaya masyarakat …", options: ["Lampung", "Jawa", "Sunda", "Bali", "Betawi"], jawaban: 0 },
-        { text: "24. Tekang dilakukan supaya tapis terlihat lebih …", options: ["menarik", "kusam", "polos", "gelap", "rusak"], jawaban: 0 },
-        { text: "25. Motif pada tapis dibuat tidak sembarangan karena memiliki …", options: ["makna tertentu", "harga murah", "bentuk sama", "warna biasa", "ukuran kecil"], jawaban: 0 },
-        { text: "26. Seni sulam Lampung harus dijaga karena termasuk …", options: ["warisan budaya", "permainan modern", "teknologi", "olahraga", "perdagangan"], jawaban: 0 },
-        { text: "27. Kain tapis biasanya digunakan dalam kegiatan …", options: ["upacara adat", "balapan", "olahraga", "permainan", "belajar biasa"], jawaban: 0 },
-        { text: "28. Semakin rumit motif tapis maka …", options: ["nilai seni semakin tinggi", "kain semakin murah", "mudah dibuat", "cepat rusak", "warna hilang"], jawaban: 0 },
-        { text: "29. Motif candi stupa menjadi bukti adanya …", options: ["pengaruh budaya lama", "permainan modern", "teknologi baru", "kendaraan tradisional", "perlombaan adat"], jawaban: 0 },
-        { text: "30. Budaya tapis mencerminkan masyarakat Lampung yang …", options: ["menghargai seni dan tradisi", "melupakan adat", "tidak suka budaya", "membenci seni", "tidak memiliki sejarah"], jawaban: 0 }
+        { text: "1. Motif binatang pada kain tapis digunakan karena masyarakat Lampung menghargai …", options: ["alam sekitar", "kendaraan", "teknologi", "permainan", "gedung tinggi"], jawaban: 0, cara: "Masyarakat Lampung menghargai alam sekitar" },
+        { text: "2. Jika kain tapis memiliki motif candi stupa, maka kain tersebut menunjukkan pengaruh budaya …", options: ["Hindu-Buddha", "Barat", "Jepang", "modern", "Arab"], jawaban: 0, cara: "Motif candi stupa berasal dari pengaruh Hindu-Buddha" },
+        { text: "3. Luas Provinsi Lampung yang cukup besar membuat Lampung memiliki …", options: ["keberagaman budaya", "sedikit penduduk", "satu adat saja", "tidak ada tradisi", "sedikit bahasa"], jawaban: 0, cara: "Luas wilayah menyebabkan keberagaman budaya" },
+        { text: "4. Tekang pada tapis berhubungan dengan proses …", options: ["menghias kain", "memasak", "bertani", "bermain musik", "berdagang"], jawaban: 0, cara: "Tekang adalah proses menghias kain" },
+        { text: "5. Pantis atau lilit sarang lebah pada tapis berfungsi sebagai …", options: ["penghias kain", "alat musik", "senjata adat", "alat olahraga", "permainan rakyat"], jawaban: 0, cara: "Pantis berfungsi sebagai penghias kain" },
+        { text: "6. Warna kuning pada kain tapis dibuat menggunakan …", options: ["bahan pewarna alami", "minyak tanah", "pasir laut", "batu kapur", "plastik"], jawaban: 0, cara: "Warna kuning dari pewarna alami" },
+        { text: "7. Contoh hasil karya seni sulam Lampung adalah …", options: ["tapis dan selendang", "meja dan kursi", "topi dan sepatu", "tombak dan keris", "piring dan gelas"], jawaban: 0, cara: "Tapis dan selendang adalah karya seni sulam Lampung" },
+        { text: "8. Motif nada pada tapis melambangkan …", options: ["keharmonisan", "kesedihan", "kemarahan", "ketakutan", "kelemahan"], jawaban: 0, cara: "Motif nada melambangkan keharmonisan" },
+        { text: "9. Kain tapis dipakai saat acara adat karena menjadi simbol …", options: ["budaya Lampung", "permainan rakyat", "olahraga daerah", "teknologi modern", "perdagangan"], jawaban: 0, cara: "Tapis adalah simbol budaya Lampung" },
+        { text: "10. Motif binatang pada tapis memiliki arti …", options: ["kekuatan dan kehidupan", "kemarahan", "kelemahan", "ketakutan", "kesedihan"], jawaban: 0, cara: "Motif binatang melambangkan kekuatan dan kehidupan" },
+        { text: "11. Tapis Lampung dibuat dengan teliti agar hasilnya …", options: ["indah dan bernilai seni", "cepat rusak", "mudah sobek", "polos", "sederhana"], jawaban: 0, cara: "Ketelitian menghasilkan tapis yang indah dan bernilai seni" },
+        { text: "12. Jika budaya tapis tidak dijaga maka …", options: ["budaya daerah bisa hilang", "budaya semakin maju", "tapis makin terkenal", "adat makin kuat", "masyarakat bertambah"], jawaban: 0, cara: "Budaya yang tidak dijaga akan hilang" },
+        { text: "13. Benang emas pada tapis digunakan supaya kain terlihat …", options: ["mewah", "kusam", "tipis", "kasar", "gelap"], jawaban: 0, cara: "Benang emas memberi kesan mewah" },
+        { text: "14. Motif candi stupa pada tapis menunjukkan masyarakat Lampung menghargai …", options: ["sejarah budaya", "teknologi", "kendaraan", "permainan", "perdagangan"], jawaban: 0, cara: "Motif candi stupa menunjukkan penghargaan pada sejarah budaya" },
+        { text: "15. Salah satu cara melestarikan tapis adalah …", options: ["mempelajarinya", "melupakannya", "membuangnya", "merusaknya", "menggantinya"], jawaban: 0, cara: "Mempelajari tapis adalah cara melestarikannya" },
+        { text: "16. Motif naga pada tapis biasanya melambangkan …", options: ["keberanian", "kemalasan", "ketakutan", "kesedihan", "kelemahan"], jawaban: 0, cara: "Naga melambangkan keberanian" },
+        { text: "17. Warna kuning pada tapis sering diartikan sebagai simbol …", options: ["kebesaran", "kemarahan", "kesedihan", "kemiskinan", "kelemahan"], jawaban: 0, cara: "Kuning melambangkan kebesaran" },
+        { text: "18. Tapis termasuk karya seni daerah yang diwariskan secara …", options: ["turun-temurun", "mendadak", "modern", "asing", "bebas"], jawaban: 0, cara: "Tapis diwariskan secara turun-temurun" },
+        { text: "19. Motif nada dibuat agar menggambarkan kehidupan yang …", options: ["harmonis", "penuh marah", "sedih", "takut", "lemah"], jawaban: 0, cara: "Motif nada menggambarkan kehidupan harmonis" },
+        { text: "20. Masyarakat Lampung menjaga budaya tapis agar …", options: ["tetap lestari", "cepat hilang", "rusak", "dilupakan", "ditinggalkan"], jawaban: 0, cara: "Menjaga budaya agar tetap lestari" },
+        { text: "21. Sulaman pada tapis dibuat menggunakan …", options: ["benang emas atau perak", "plastik", "kayu", "kaca", "batu"], jawaban: 0, cara: "Sulaman tapis menggunakan benang emas atau perak" },
+        { text: "22. Motif binatang pada tapis terinspirasi dari …", options: ["alam sekitar", "gedung tinggi", "teknologi", "kendaraan", "permainan digital"], jawaban: 0, cara: "Inspirasi motif binatang dari alam sekitar" },
+        { text: "23. Tapis Lampung menjadi identitas budaya masyarakat …", options: ["Lampung", "Jawa", "Sunda", "Bali", "Betawi"], jawaban: 0, cara: "Tapis adalah identitas budaya Lampung" },
+        { text: "24. Tekang dilakukan supaya tapis terlihat lebih …", options: ["menarik", "kusam", "polos", "gelap", "rusak"], jawaban: 0, cara: "Tekang membuat tapis lebih menarik" },
+        { text: "25. Motif pada tapis dibuat tidak sembarangan karena memiliki …", options: ["makna tertentu", "harga murah", "bentuk sama", "warna biasa", "ukuran kecil"], jawaban: 0, cara: "Setiap motif memiliki makna tertentu" },
+        { text: "26. Seni sulam Lampung harus dijaga karena termasuk …", options: ["warisan budaya", "permainan modern", "teknologi", "olahraga", "perdagangan"], jawaban: 0, cara: "Seni sulam adalah warisan budaya" },
+        { text: "27. Kain tapis biasanya digunakan dalam kegiatan …", options: ["upacara adat", "balapan", "olahraga", "permainan", "belajar biasa"], jawaban: 0, cara: "Tapis digunakan dalam upacara adat" },
+        { text: "28. Semakin rumit motif tapis maka …", options: ["nilai seni semakin tinggi", "kain semakin murah", "mudah dibuat", "cepat rusak", "warna hilang"], jawaban: 0, cara: "Motif rumit meningkatkan nilai seni" },
+        { text: "29. Motif candi stupa menjadi bukti adanya …", options: ["pengaruh budaya lama", "permainan modern", "teknologi baru", "kendaraan tradisional", "perlombaan adat"], jawaban: 0, cara: "Motif candi stupa bukti pengaruh budaya lama" },
+        { text: "30. Budaya tapis mencerminkan masyarakat Lampung yang …", options: ["menghargai seni dan tradisi", "melupakan adat", "tidak suka budaya", "membenci seni", "tidak memiliki sejarah"], jawaban: 0, cara: "Tapis mencerminkan penghargaan pada seni dan tradisi" }
     ];
 
     const mapels = [
+        { id: "mtk", nama: "📐 Matematika", icon: "📐", jumlah: 25, soal: soalMatematika },
         { id: "pjok", nama: "⚽ PJOK", icon: "⚽", jumlah: 20, soal: soalPJOK },
         { id: "lampung", nama: "🦅 Bahasa Lampung", icon: "🦅", jumlah: 30, soal: soalLampung }
     ];
@@ -619,12 +649,12 @@
     let ujianDimulai = false;
     let isBlocked = false;
 
-    let nilaiMapel = { pjok: null, lampung: null };
-    let jawabanMapel = { pjok: [], lampung: [] };
-    let raguMapel = { pjok: [], lampung: [] };
-    let ujianSelesaiMapel = { pjok: false, lampung: false };
-    let soalAcakMapel = { pjok: [], lampung: [] };
-    let ujianDimulaiMapel = { pjok: false, lampung: false };
+    let nilaiMapel = { mtk: null, pjok: null, lampung: null };
+    let jawabanMapel = { mtk: [], pjok: [], lampung: [] };
+    let raguMapel = { mtk: [], pjok: [], lampung: [] };
+    let ujianSelesaiMapel = { mtk: false, pjok: false, lampung: false };
+    let soalAcakMapel = { mtk: [], pjok: [], lampung: [] };
+    let ujianDimulaiMapel = { mtk: false, pjok: false, lampung: false };
 
     function shuffleArray(arr) {
         for (let i = arr.length - 1; i > 0; i--) {
@@ -683,8 +713,6 @@
     function showTab(tabId) {
         document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
         document.getElementById(tabId).classList.add('active');
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        event.target.classList.add('active');
         if (tabId === 'tab2' && currentMapel) renderSoalLengkap();
         if (tabId === 'tab3') renderNilai();
     }
@@ -768,10 +796,27 @@
             return;
         }
         if (ujianSelesai) {
+            let pembahasanHtml = '<div class="warning-box" style="background:#e8f5e9;"><strong>📖 PEMBAHASAN SOAL:</strong><br><br>';
+            soalAcak.forEach((q, i) => {
+                const jawabanUserHuruf = jawabanUser[i] !== null ? String.fromCharCode(65 + jawabanUser[i]) : '-';
+                const jawabanBenarHuruf = String.fromCharCode(65 + q.jawaban);
+                const statusIcon = jawabanUser[i] === q.jawaban ? '✅' : '❌';
+                pembahasanHtml += `
+                    <div style="margin-bottom:15px; padding:10px; background:white; border-radius:10px;">
+                        <strong>${statusIcon} Soal ${i+1}:</strong> ${q.text}<br>
+                        <strong>Jawaban Anda:</strong> ${jawabanUserHuruf}<br>
+                        <strong>Jawaban Benar:</strong> ${jawabanBenarHuruf}<br>
+                        <strong>Cara Penyelesaian:</strong> ${q.cara || 'Tidak ada pembahasan'}<br>
+                    </div>
+                `;
+            });
+            pembahasanHtml += '</div>';
+            
             container.innerHTML = `
                 <div class="info-card"><h3>${currentMapel.icon} ${currentMapel.nama}</h3><div class="score-box"><h2>${nilaiAkhir}</h2><p>Nilai Akhir</p></div>
                 <button class="btn-reset" onclick="resetMapel()">🔄 Reset & Ulang</button></div>
-                <div class="warning-box">✅ Ujian selesai! Jawaban tidak bisa diganti.</div>`;
+                <div class="warning-box">✅ Ujian selesai! Jawaban tidak bisa diganti.</div>
+                ${pembahasanHtml}`;
             return;
         }
         const terjawab = jawabanUser.filter(j => j !== null).length;
@@ -898,7 +943,7 @@
     }
 
     function resetSemuaNilai() {
-        if (confirm('Reset semua nilai dan jawaban untuk kedua mapel?')) {
+        if (confirm('Reset semua nilai dan jawaban untuk semua mapel?')) {
             mapels.forEach(m => { 
                 acakSoal(m.id); 
                 ujianSelesaiMapel[m.id] = false; 
@@ -953,12 +998,12 @@
         const saved = localStorage.getItem(`tryout_final_${nama}`);
         if (saved) {
             const data = JSON.parse(saved);
-            nilaiMapel = data.nilaiMapel || { pjok: null, lampung: null };
-            ujianSelesaiMapel = data.ujianSelesaiMapel || { pjok: false, lampung: false };
-            ujianDimulaiMapel = data.ujianDimulaiMapel || { pjok: false, lampung: false };
-            soalAcakMapel = data.soalAcakMapel || { pjok: [], lampung: [] };
-            jawabanMapel = data.jawabanMapel || { pjok: [], lampung: [] };
-            raguMapel = data.raguMapel || { pjok: [], lampung: [] };
+            nilaiMapel = data.nilaiMapel || { mtk: null, pjok: null, lampung: null };
+            ujianSelesaiMapel = data.ujianSelesaiMapel || { mtk: false, pjok: false, lampung: false };
+            ujianDimulaiMapel = data.ujianDimulaiMapel || { mtk: false, pjok: false, lampung: false };
+            soalAcakMapel = data.soalAcakMapel || { mtk: [], pjok: [], lampung: [] };
+            jawabanMapel = data.jawabanMapel || { mtk: [], pjok: [], lampung: [] };
+            raguMapel = data.raguMapel || { mtk: [], pjok: [], lampung: [] };
             currentMapel = data.currentMapel || null;
             if (currentMapel) { ujianDimulai = ujianDimulaiMapel[currentMapel.id] || false; }
         }
